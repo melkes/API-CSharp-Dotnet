@@ -10,8 +10,8 @@ using PetShelterAPI.Models;
 namespace PetShelterAPI.Migrations
 {
     [DbContext(typeof(PetShelterAPIContext))]
-    [Migration("20230423055049_UpdateCaps")]
-    partial class UpdateCaps
+    [Migration("20230423055920_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
