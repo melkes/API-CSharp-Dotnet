@@ -1,4 +1,4 @@
-# Animal Shelter
+# Animal Shelter API
 #### By Mike Wilkes
 #### A .NET# API for a database of adoptable pets
 ## Technologies Used
@@ -37,9 +37,19 @@ This is a web API made using the ASP.NET framework, for use with a MySQL databas
 - Try a search query with GET, create an entry with POST, search by entry id with GET {id}, edit an entry with PUT, or remove one with DELETE.
   - Click the dropdown for the chosen method, then click "Try it out"
 
+### Paging
+In order to test the pagination function, use the included `.sql` file.
+- Open MySQLWorkbench and select Data Import/Restore from the Administration tab
+- Choose "Import from Self-Contained File" and select `shelter_api_pets.sql` from this repository
+- Open `appsettings.json` and change line 10 so that your database is set to `shelter_api_pets`
 ## Known Bugs
+No known bugs
 
 ## Project Roadmap
+Future improvements could include:
+- Creating a service for generating pagination URLs, so that a client could have links to the First Page, Last Page, Next page and Previous page.
+- Configuring this URL service to get the base URL.
+- Creating a pagination helper class to have more reusable code and reduce the size of the controller.
 
 ## License
 
