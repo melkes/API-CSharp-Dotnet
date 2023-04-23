@@ -13,7 +13,7 @@ public class PetsController : ControllerBase
         _db = db;
     }
 
-    // GET api/animals
+    // GET api/pets
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Pet>>> Get()
     {
@@ -33,4 +33,12 @@ public class PetsController : ControllerBase
         return pet;
     }
     
+    // POST api/pets
+    [HttpPost]
+    public async Task<ActionResult<Pet>> Post(Pet pet)
+    {
+      _db.Pets.Add(pet);
+      await _db.SaveChangesAsync();
+      return CreatedAtAction(nameof(GetPet), new { id = pet.PetId }, pet);
+    }
 }
