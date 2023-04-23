@@ -13,43 +13,55 @@ public class PetsController : ControllerBase
         _db = db;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Pet>>> Get(string name, string species, string sex, string color, int minimumAge, string description)
+  [HttpGet]
+    public async Task<IActionResult> GetAll([FromQuery] PaginationFilter filter)
     {
-      IQueryable<Pet> query = _db.Pets.AsQueryable();
-      
-      if (name != null)
-      {
-        query = query.Where(entry => entry.Name == name);
-      }
-
-      if (species != null)
-      {
-        query = query.Where(entry => entry.Species == species);
-      }
-      
-      if (sex != null)
-      {
-        query = query.Where(entry => entry.Sex == sex);
-      }
-      
-      if (color != null)
-      {
-        query = query.Where(entry => entry.Color == color);
-      }
-
-      if (minimumAge > 0)
-      {
-        query = query.Where(entry => entry.Age >= minimumAge);
-      }
-
-      if (description != null)
-      {
-        query = query.Where(entry => entry.Description == description);
-      }
-
-      return await query.ToListAsync();
+        var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+        var pagedData = await _db.Pets
+            .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+            .Take(validFilter.PageSize)
+            .ToListAsync();
+        var totalRecords = await _db.Pets.CountAsync();
+        return Ok(new PagedResponse<List<Pet>>(pagedData, validFilter.PageNumber, validFilter.PageSize));
     }
+  
+    // [HttpGet]
+    // public async Task<ActionResult<IEnumerable<Pet>>> Get(string name, string species, string sex, string color, int minimumAge, string description)
+    // {
+    //   IQueryable<Pet> query = _db.Pets.AsQueryable();
+      
+    //   if (name != null)
+    //   {
+    //     query = query.Where(entry => entry.Name == name);
+    //   }
+
+    //   if (species != null)
+    //   {
+    //     query = query.Where(entry => entry.Species == species);
+    //   }
+      
+    //   if (sex != null)
+    //   {
+    //     query = query.Where(entry => entry.Sex == sex);
+    //   }
+      
+    //   if (color != null)
+    //   {
+    //     query = query.Where(entry => entry.Color == color);
+    //   }
+
+    //   if (minimumAge > 0)
+    //   {
+    //     query = query.Where(entry => entry.Age >= minimumAge);
+    //   }
+
+    //   if (description != null)
+    //   {
+    //     query = query.Where(entry => entry.Description == description);
+    //   }
+
+    //   return await query.ToListAsync();
+    // }
     
     // [HttpGet("{id}")]
     // public async Task<ActionResult<Pet>> GetPet(int id)
