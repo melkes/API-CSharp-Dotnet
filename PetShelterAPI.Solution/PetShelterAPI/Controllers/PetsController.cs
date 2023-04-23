@@ -51,19 +51,31 @@ public class PetsController : ControllerBase
       return await query.ToListAsync();
     }
     
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Pet>> GetPet(int id)
-    {
-         Pet pet = await _db.Pets.FindAsync(id);
+    // [HttpGet("{id}")]
+    // public async Task<ActionResult<Pet>> GetPet(int id)
+    // {
+    //      Pet pet = await _db.Pets.FindAsync(id);
 
-        if (pet == null)
-        {
-            return NotFound();
-        }
+    //     if (pet == null)
+    //     {
+    //         return NotFound();
+    //     }
 
-        return pet;
-    }
+    //     return pet;
+    // }
     
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetPet(int id)
+    {
+    var pet = await _db.Pets
+             .FirstOrDefaultAsync(pet => pet.PetId == id);
+     if (pet == null)
+      {
+        return NotFound();
+      }
+      return Ok(pet);
+    }
+
     [HttpPost]
     public async Task<ActionResult<Pet>> Post(Pet pet)
     {
