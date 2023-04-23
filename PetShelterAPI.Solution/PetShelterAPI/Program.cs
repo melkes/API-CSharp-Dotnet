@@ -1,9 +1,12 @@
+using PetShelterAPI.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<PetShelterApiContext>(
+builder.Services.AddDbContext<PetShelterAPIContext>(
                   dbContextOptions => dbContextOptions
                     .UseMySql(
                       builder.Configuration["ConnectionStrings:DefaultConnection"], 
