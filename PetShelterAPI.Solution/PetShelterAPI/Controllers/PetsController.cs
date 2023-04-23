@@ -13,7 +13,6 @@ public class PetsController : ControllerBase
         _db = db;
     }
 
-    // GET: api/Pets
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Pet>>> Get(string name, string species, string sex, string color, int minimumAge, string description)
     {
@@ -65,7 +64,6 @@ public class PetsController : ControllerBase
         return pet;
     }
     
-    // POST api/pets
     [HttpPost]
     public async Task<ActionResult<Pet>> Post(Pet pet)
     {
@@ -74,7 +72,6 @@ public class PetsController : ControllerBase
       return CreatedAtAction(nameof(GetPet), new { id = pet.PetId }, pet);
     }
 
-    // PUT: api/Pets/5
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, Pet pet)
     {
@@ -109,7 +106,6 @@ public class PetsController : ControllerBase
       return _db.Pets.Any(e => e.PetId == id);
     }
 
-    // DELETE: api/Pets/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePet(int id)
     {
