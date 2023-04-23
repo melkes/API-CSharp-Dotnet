@@ -13,69 +13,51 @@ public class PetsController : ControllerBase
         _db = db;
     }
 
-  [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] PaginationFilter filter)
+    [HttpGet]
+    public async Task<IActionResult> GetAll([FromQuery] PaginationFilter filter, string name, string species, string sex, string color, int minimumAge, string description)
     {
         var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
-        var pagedData = await _db.Pets
+        var query = _db.Pets.AsQueryable();
+
+        if (name != null)
+        {
+            query = query.Where(pet => pet.Name == name);
+        }
+
+        if (species != null)
+        {
+            query = query.Where(pet => pet.Species == species);
+        }
+
+        if (sex != null)
+        {
+            query = query.Where(pet => pet.Sex == sex);
+        }
+
+        if (color != null)
+        {
+            query = query.Where(pet => pet.Color == color);
+        }
+
+        if (minimumAge > 0)
+        {
+            query = query.Where(pet => pet.Age >= minimumAge);
+        }
+
+        if (description != null)
+        {
+            query = query.Where(pet => pet.Description == description);
+        }
+
+        var pagedData = await query
             .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
             .Take(validFilter.PageSize)
             .ToListAsync();
-        var totalRecords = await _db.Pets.CountAsync();
-        return Ok(new PagedResponse<List<Pet>>(pagedData, validFilter.PageNumber, validFilter.PageSize));
+
+        var totalRecords = await query.CountAsync();
+        return Ok(new PagedResponse<List<Pet>>(pagedData, validFilter.PageNumber, validFilter.PageSize, totalRecords));
     }
-  
-    // [HttpGet]
-    // public async Task<ActionResult<IEnumerable<Pet>>> Get(string name, string species, string sex, string color, int minimumAge, string description)
-    // {
-    //   IQueryable<Pet> query = _db.Pets.AsQueryable();
-      
-    //   if (name != null)
-    //   {
-    //     query = query.Where(entry => entry.Name == name);
-    //   }
 
-    //   if (species != null)
-    //   {
-    //     query = query.Where(entry => entry.Species == species);
-    //   }
-      
-    //   if (sex != null)
-    //   {
-    //     query = query.Where(entry => entry.Sex == sex);
-    //   }
-      
-    //   if (color != null)
-    //   {
-    //     query = query.Where(entry => entry.Color == color);
-    //   }
-
-    //   if (minimumAge > 0)
-    //   {
-    //     query = query.Where(entry => entry.Age >= minimumAge);
-    //   }
-
-    //   if (description != null)
-    //   {
-    //     query = query.Where(entry => entry.Description == description);
-    //   }
-
-    //   return await query.ToListAsync();
-    // }
-    
-    // [HttpGet("{id}")]
-    // public async Task<ActionResult<Pet>> GetPet(int id)
-    // {
-    //      Pet pet = await _db.Pets.FindAsync(id);
-
-    //     if (pet == null)
-    //     {
-    //         return NotFound();
-    //     }
-
-    //     return pet;
-    // }
-    
     [HttpGet("{id}")]
     public async Task<IActionResult> GetPet(int id)
     {
