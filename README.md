@@ -32,16 +32,21 @@ This is a web API made using the ASP.NET framework, for use with a MySQL databas
   - `dotnet run`
 - You may be asked to enter your system password
 
-### Testing with Swagger
-- In a web browser, navigate to https://localhost:5001/swagger/index.html.
+### Testing endpoints with Swagger
+- In a web browser, navigate to https://localhost:5001/swagger/index.html. Here you can find all of the available endpoints for the API.
 - Try a search query with GET, create an entry with POST, search by entry id with GET {id}, edit an entry with PUT, or remove one with DELETE.
   - Click the dropdown for the chosen method, then click "Try it out"
 
 ### Paging
-In order to test the pagination function, use the included `.sql` file.
-- Open MySQLWorkbench and select Data Import/Restore from the Administration tab
-- Choose "Import from Self-Contained File" and select `shelter_api_pets.sql` from this repository
-- Open `appsettings.json` and change line 10 so that your database is set to `shelter_api_pets`
+- To test the pagination feature in the [Swagger UI](https://localhost:5001/swagger/index.html), click on the GET method, and then "Try it out". Enter numbers for both `PageNumber` and `PageSize`, and click "Execute". For example, if you were to set a Page Number of 3 and a Page Size of 5, it will return the third page of five entries, entries 11-15.
+
+### SQL Test File
+- For ease of testing, you may wish to use the included `.sql` test file. This file contains a table with 50 rows of correctly formatted data. To use it:
+  - Open MySQLWorkbench and select Data Import/Restore from the Administration tab
+  - Choose "Import from Self-Contained File" and select `shelter_api_pets.sql` from this repository
+  - Open `appsettings.json` and change line 10 so that your database is set to `shelter_api_pets`
+  - run `dotnet ef database update`
+
 ## Known Bugs
 No known bugs
 
